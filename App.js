@@ -1,13 +1,10 @@
-import { Login } from "./Screens/Login";
-import { SafeArea } from "./Components/SafeArea";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-
+import { NavigationContainer } from "@react-navigation/native";
+import { StackNavigation } from "./Screens/StackNavigation";
 
 export default function App (){
   return(
-    <SafeArea>
-     <Login/>
-    </SafeArea> 
-    
+    <NavigationContainer>
+      <StackNavigation/>
+    </NavigationContainer> 
   )
 }

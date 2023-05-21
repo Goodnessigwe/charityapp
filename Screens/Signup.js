@@ -9,7 +9,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import { Pacifico_400Regular } from '@expo-google-fonts/pacifico';
 
-export function Login ({navigation}){
+export function Signup (){
     const [text, setText] = useState("");
     const [number, setNumber] = useState("");
     const [appIsReady, setAppIsReady] = useState(false);
@@ -48,7 +48,7 @@ export function Login ({navigation}){
             <View style={StyleSheet.center}>
             <View>
             <Text  style={{marginTop:10,textAlign:'center'}}>Charity App</Text>
-            <Text  style={{marginTop:5, textAlign:'center'}}>Login to your Charity App account</Text>
+            <Text  style={{marginTop:5, textAlign:'center'}}>Create a donator account</Text>
             </View>
             <View>
                 <TextInput
@@ -63,16 +63,23 @@ export function Login ({navigation}){
                 value={text}
                 onChangeText={text => setText(text)}
                 />
+                <TextInput
+                style={{marginTop:10}}
+                label=" Confirm Password"
+                mode="outline"
+                value={text}
+                onChangeText={number => setNumber(number)}
+                />
                 <Button  style={{marginTop:20}}mode="contained" onPress={() => console.log('Pressed')}>
-                    Log in
+                    Signup
                 </Button>
             </View> 
-            <View style={{fontSize:20, alignContent:'center', flexDirection:'row', alignItems:'center'}}>
+            {/* <View style={{fontSize:20, alignContent:'center', flexDirection:'row', alignItems:'center'}}>
                 <Text>Don't have an account?</Text>
-                <TouchableOpacity  onPress={()=>navigation.navigate('Signup')}>
+                <TouchableOpacity  onPress={()=>{}}>
                     <Text style={{fontSize:20, fontWeight:'bold', color:'blue' }}>Sign up</Text>
                 </TouchableOpacity>
-            </View>
+            </View> */}
             </View>
         </SafeArea>
 
