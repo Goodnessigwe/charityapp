@@ -115,7 +115,9 @@ const Tab = createBottomTabNavigator();
                  
   )
 }
-export function MyHome (){
+export function MyHome ({navigation,route}){
+  const{firstName,city,score}=route.params;
+  console.log(firstName);
     return(
         <Tab.Navigator
         screenOptions={({ route }) => ({

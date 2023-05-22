@@ -63,7 +63,11 @@ export function Login ({navigation}){
                 value={text}
                 onChangeText={text => setText(text)}
                 />
-                <Button  style={{marginTop:20}}mode="contained" onPress={() => console.log('Pressed')}>
+                <Button  style={{marginTop:20}}mode="contained" onPress={() => navigation.navigate('My Home',{
+                  firstName:'Goodness',
+                  city:'Abuja',
+                  score:[4,9,9,9]
+                })}>
                     Log in
                 </Button>
             </View> 

@@ -28,7 +28,7 @@ export function About (){
 const Styles = StyleSheet.create({
     container:{
         flex:1,
-        backgroundColor:Theme.colors.purple500,
+       // backgroundColor:Theme.colors.purple500,
     },
     appText1:{
         color:Theme.colors.purple700,
