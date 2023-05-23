@@ -13,6 +13,7 @@ import { Donate } from './Donate';
 import { About } from './About';
 import { Theme } from '../utils/theme';
 
+
 const Tab = createBottomTabNavigator();
 
  function Home (){
@@ -115,9 +116,7 @@ const Tab = createBottomTabNavigator();
                  
   )
 }
-export function MyHome ({navigation,route}){
-  const{firstName,city,score}=route.params;
-  console.log(firstName);
+export function MyHome ({navigation}){
     return(
         <Tab.Navigator
         screenOptions={({ route }) => ({

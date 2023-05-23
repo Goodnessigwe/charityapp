@@ -28,6 +28,10 @@ export const Theme = {
          gray700:'#413F42', 
          black:'#252525',
          white:'#fff',
+         gray900:'#1A1A1A',
+         white2 :'#ecf0f1',
+         emerald:'#028A0F'
+
         }, 
         sizes: [0, 4, 8, 16, 32,64,128], 
         fonts: { 
