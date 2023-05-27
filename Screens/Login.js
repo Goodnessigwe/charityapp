@@ -8,6 +8,14 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import { Pacifico_400Regular } from '@expo-google-fonts/pacifico';
+import { Formik } from "formik";
+import * as yup from "yup";
+
+
+const validationRules = yup.object({
+  email:yup.string().required('this fild is required'),
+  password:yup.string().required('this fild is required')
+});
 
 export function Login ({navigation}){
     const [text, setText] = useState("");
@@ -50,27 +58,49 @@ export function Login ({navigation}){
             <Text  style={{marginTop:10,textAlign:'center'}}>Charity App</Text>
             <Text  style={{marginTop:5, textAlign:'center'}}>Login to your Charity App account</Text>
             </View>
-            <View>
+            <Formik
+        initialValues={{ email: '', password:''}}
+        onSubmit={(values, action )=>{
+          console.log(values, values.email);
+        } }
+        validationSchema={validationRules}
+
+      >
+        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+          <View>
                 <TextInput
-                style={{marginTop:10}}
-                label="Email"
-                value={text}
-                onChangeText={text => setText(text)}
-                />
+                    mode="outlined"
+                    label='email'
+                    style={styles.input}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    value={values.email}
+                  />
+                  {touched.email && errors.email?<Text style={{color:'red'}}>{errors.email}</Text>: null }
+              
                 <TextInput
-                style={{marginTop:10}}
-                label="Password"
-                value={text}
-                onChangeText={text => setText(text)}
+                  mode="outlined"
+                  label='password'
+                  style={styles.input}
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  value={values.password}
+                  secureTextEntry={true}
                 />
-                <Button  style={{marginTop:20}}mode="contained" onPress={()=>navigation.navigate('Donate')}>
-                    Log in
-                </Button>
-            </View> 
-            <View style={{fontSize:20, alignContent:'center', flexDirection:'row', alignItems:'center'}}>
-                <Text>Don't have an account?</Text>
+                {touched.email && errors.email?<Text style={{color:'red'}}>{errors.password}</Text>: null }
+                <Button 
+                mode='contained'
+                onPress={handleSubmit} 
+                contentStyle={{paddingVertical:6}}
+                style={{marginVertical:12}}
+                title="Submit">Create account</Button>
+          </View>
+        )}
+      </Formik>
+            <View style={{alignContent:'center', flexDirection:'row', alignItems:'center'}}>
+                <Text style={{fontSize:20}}>Don't have an account?</Text>
                 <TouchableOpacity  onPress={()=>navigation.navigate('Signup')}>
-                    <Text style={{fontSize:20, fontWeight:'bold', color:'blue' }}>Sign up</Text>
+                    <Text style={{fontSize:20, color:'blue' }}>Sign up</Text>
                 </TouchableOpacity>
             </View>
             </View>

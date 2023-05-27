@@ -3,6 +3,8 @@ export const Theme = {
         purple700:'#4C3A51', //1
         purple500:'#774360',//2
         purple300:'#B25068', 
+        purple100:'#BB86FC', 
+        purple900:'#3700B3',
         orange900:'#E38B29', 
         orange700:'#F1A661', 
         orange500:'#FFD8A9', //6
