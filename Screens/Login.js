@@ -2,7 +2,7 @@ import { useState,useEffect, useCallback } from "react";
 import { SafeArea } from "../Components/SafeArea";
 import * as React from 'react';
 import { TextInput, Button } from 'react-native-paper';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import * as SplashScreen from 'expo-splash-screen';
@@ -10,6 +10,8 @@ import * as Font from 'expo-font';
 import { Pacifico_400Regular } from '@expo-google-fonts/pacifico';
 import { Formik } from "formik";
 import * as yup from "yup";
+import { auth } from "../Settings/firebase.setting";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 
 const validationRules = yup.object({
@@ -22,46 +24,48 @@ export function Login ({navigation}){
     const [number, setNumber] = useState("");
     const [appIsReady, setAppIsReady] = useState(false);
 
-  useEffect(() => {
-    async function prepare() {
-      try {
-        await Font.loadAsync({Pacifico_400Regular});
-        await new Promise(resolve => setTimeout(resolve, 2000));
-      } catch (e) {
-        console.warn(e);
+   useEffect(() => {
+     async function prepare() {
+       try {
+         await Font.loadAsync({Pacifico_400Regular});
+         await new Promise(resolve => setTimeout(resolve, 2000));
+       } catch (e) {
+         console.warn(e);
       } finally {
-        setAppIsReady(true);
+         setAppIsReady(true);
       }
-    }
+     }
 
     prepare();
-  }, []);
+   }, []);
 
-  const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
-      await SplashScreen.hideAsync();
+    const onLayoutRootView = useCallback(async () => {
+      if (appIsReady) {
+        await SplashScreen.hideAsync();
+     }
+    }, [appIsReady]);
+
+    if (!appIsReady) {
+      return null;
     }
-  }, [appIsReady]);
-
-  if (!appIsReady) {
-    return null;
-  }
-
-
-
 
     return(
         <SafeArea>
             
             <View style={StyleSheet.center}>
             <View>
-            <Text  style={{marginTop:10,textAlign:'center'}}>Charity App</Text>
+            <Text  style={{marginTop:10,textAlign:'center', fontFamily:'Pacifico_400Regular'}}>Charity App</Text>
             <Text  style={{marginTop:5, textAlign:'center'}}>Login to your Charity App account</Text>
             </View>
             <Formik
         initialValues={{ email: '', password:''}}
         onSubmit={(values, action )=>{
-          console.log(values, values.email);
+          signInWithEmailAndPassword(auth, values.email, values.password)
+          .then(() => {navigation.navigate('My Home')})
+          // .catch(error => console.log(error))
+          .catch(()=>{
+            Alert.alert('Cross Check','Email and Password Mismatch') 
+          })
         } }
         validationSchema={validationRules}
 
@@ -93,7 +97,7 @@ export function Login ({navigation}){
                 onPress={handleSubmit} 
                 contentStyle={{paddingVertical:6}}
                 style={{marginVertical:12}}
-                title="Submit">Create account</Button>
+                title="Submit">Login to your account</Button>
           </View>
         )}
       </Formik>

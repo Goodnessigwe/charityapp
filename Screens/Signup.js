@@ -2,7 +2,7 @@ import { useState,useEffect, useCallback } from "react";
 import { SafeArea } from "../Components/SafeArea";
 import * as React from 'react';
 import { TextInput, Button } from 'react-native-paper';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import * as SplashScreen from 'expo-splash-screen';
@@ -10,6 +10,8 @@ import * as Font from 'expo-font';
 import { Pacifico_400Regular } from '@expo-google-fonts/pacifico';
 import { Formik } from "formik";
 import * as yup from 'yup';
+import { auth } from "../Settings/firebase.setting";
+import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 const validationRules = yup.object({
   email:yup.string().required('you must fill this fild').min(5).max(36),
@@ -22,42 +24,49 @@ export function Signup ({navigation}) {
   // const [number, setNumber] = useState("");
   const [appIsReady, setAppIsReady] = useState(false);
 
-  useEffect(() => {
+    useEffect(() => {
     async function prepare() {
-      try {
-        await Font.loadAsync({Pacifico_400Regular});
-        await new Promise(resolve => setTimeout(resolve, 2000));
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setAppIsReady(true);
+       try {
+         await Font.loadAsync({Pacifico_400Regular});
+         await new Promise(resolve => setTimeout(resolve, 2000));
+       } catch (e) {
+         console.warn(e);
+       } finally {
+         setAppIsReady(true);
       }
-    }
+     }
 
-    prepare();
-  }, []);
+     prepare();
+   }, []);
 
-  const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
-      await SplashScreen.hideAsync();
-    }
-  }, [appIsReady]);
+   const onLayoutRootView = useCallback(async () => {
+     if (appIsReady) {
+       await SplashScreen.hideAsync();
+     }
+   }, [appIsReady]);
 
-  if (!appIsReady) {
+   if (!appIsReady) {
     return null;
-  }
+   }
+  
 
   return (
     <SafeArea>
       <View style={styles.heading}>
-        <Text  style={{marginTop:10,textAlign:'center'}}>Charity App</Text>
+        <Text  style={{marginTop:10,textAlign:'center',fontFamily:'Pacifico_400Regular'}}>Charity App</Text>
         <Text  style={{marginTop:5, textAlign:'center'}}>Create a donator account</Text>
       </View>
 
       <Formik
         initialValues={{ email: '', password:'',passwordConfirmation:'' }}
         onSubmit={(values, action )=>{
-          console.log(values, values.email);
+          createUserWithEmailAndPassword(auth, values.email,values.password)
+          .then(() => {
+            Alert.alert('Notify',
+            'Account creation was successfull',
+            [{text:'Click here to login', onPress:()=>navigation.navigate('Login')}])
+          })
+          .catch(error => console.log(error))
         } }
         validationSchema={validationRules}
 
@@ -87,9 +96,10 @@ export function Signup ({navigation}) {
                   mode="outlined"
                   label='confirm password'
                   style={styles.input}
-                  onChangeText={handleChange('password')}
-                  onBlur={handleBlur('password')}
-                  value={values.password}
+                  onChangeText={handleChange('passwordConfirmation')}
+                  onBlur={handleBlur('passwordConfirmation')}
+                  value={values.passwordConfirmation}
+                  secureTextEntry={true}
                 />
                 <Button 
                 mode='contained'
