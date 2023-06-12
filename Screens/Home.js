@@ -1,5 +1,5 @@
 import{useState, useEffect, useCallback} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, TextInput} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, FlatList} from "react-native";
 import {sampleData} from '../assets/data/sample-data';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
@@ -60,7 +60,13 @@ const Tab = createBottomTabNavigator();
         <View style={styles.header}>
         <Text style={styles.brandName}>CharityApp</Text>
 
-            <FontAwesomeIcon icon={faUser} color="blue" size={36}/>
+            <TouchableOpacity onPress={()=>navigation.navigate('Profile')}>
+            <FontAwesomeIcon 
+            icon={faUser} 
+            color="blue"
+             size={36}
+             />
+            </TouchableOpacity>
         </View>
         <View style={styles.body}>
         <View style={styles.actionBlock}>

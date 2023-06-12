@@ -13,15 +13,14 @@ export function Create ({navigation}) {
             <Text style={styles.crimeAlert}>This app is a demonstration app built by a Cohort of students and instructor
             at early code. This app must not be use by any means for frudulent purposes. The students and instructor 
             takes no responsible for any act of crime on the app.</Text>
-
-
         </SafeArea>
     )
     :(
         <SafeArea>
            <View style={styles.wrapper}>
               <Text style={styles.subHeader2}> Login first to create a fund raiser</Text>
-              <Button mode="contained" contentStyle={{paddingVertical:4}} onPress={()=>navigation.navigate('Login')}>Go to Signin</Button>
+              <Button mode="contained" contentStyle={{paddingVertical:4}} onPress={()=>navigation.navigate('Login')}>
+                <Text>Go to Signin</Text></Button>
            </View>
         </SafeArea>
     )

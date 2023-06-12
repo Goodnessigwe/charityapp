@@ -3,7 +3,6 @@ import { AppContext } from "../Settings/globalVariables";
 import { View, StyleSheet } from "react-native";
 import { SafeArea } from "../Components/SafeArea";
 import { Theme } from "../utils/theme";
-import * as React from 'react';
 import { Button, Card, Text } from 'react-native-paper';
 
 export function FundRaisers ({navigation}){

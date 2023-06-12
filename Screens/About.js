@@ -1,8 +1,7 @@
-import {useState} from "react";
+import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { SafeArea } from "../Components/SafeArea";
 import { Theme } from "../utils/theme";
-import * as React from "react";
 import { Button } from "react-native-paper";
 
 export function About (){
@@ -18,7 +17,7 @@ export function About (){
                         related to health, food, power and economic mobility</Text>
                 </View>
                 <Button  mode="contained" onPress={() => console.log('Pressed')} style={Styles.btn}>
-                   Make a Donation
+                  <Text>Make a Donation</Text> 
                </Button>
             </View>
         </SafeArea>

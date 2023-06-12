@@ -4,14 +4,14 @@ import { createContext, useState } from "react";
 const AppContext = createContext();
 
 function AppProvider ({children}) {
-    const [firstName, setFirstName] = useState('');
-    const [uid, setUid] = useState(1234);
+    const [userNames, setUserNames] = useState({fName:null,lName:null});
+    const [uid, setUid] = useState(undefined);
 
 
     return(
-        <AppContext.Provider value={{firstName,setFirstName,uid,setUid}}>
+        <AppContext.Provider value={{userNames,setUserNames,uid,setUid}}>
             {children}
         </AppContext.Provider>
     )
-}
+} 
 export{AppContext,AppProvider}

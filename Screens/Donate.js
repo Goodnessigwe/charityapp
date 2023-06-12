@@ -1,6 +1,6 @@
-import {useState, useContext} from "react";
+import {useContext} from "react";
 import { AppContext } from "../Settings/globalVariables";
-import { View, Text, StyleSheet } from "react-native";
+import { Text, StyleSheet } from "react-native";
 import { SafeArea } from "../Components/SafeArea";
 import { Theme } from "../utils/theme";
 
