@@ -118,5 +118,3 @@ const style = StyleSheet.create({
     },
 })
 
-//validation:a set rules for controlling form inputs
-//height 

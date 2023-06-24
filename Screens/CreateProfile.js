@@ -5,7 +5,7 @@ import { SafeArea } from "../Components/SafeArea";
 import { TextInput,Button } from 'react-native-paper';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { db } from '../Settings/firebase.setting';
+import { db } from "../Settings/firebase.setting";
 import { setDoc,doc } from "firebase/firestore";
 
 const validationRules = yup.object({
@@ -31,8 +31,7 @@ export function CreateProfile ({navigation}) {
       onSubmit={(values,action) => {
 
         setEventActivityIndicator(true);//start ActivityIndicator
-        setDoc(doc(db,'users',uid),
-        {
+        setDoc(doc(db,'users',uid),{
           firstName:values.fName,
           lastName:values.lName,
           mailingAddress:values.mail,
@@ -148,7 +147,11 @@ export function CreateProfile ({navigation}) {
             onPress={handleSubmit}
             contentStyle={{paddingVertical:6}}
             style={{marginVertical:12}}>
-                Create Profile
+               {
+                eventActivityIndicator
+                ? <ActivityIndicator size='small'/>
+                : 'Create Profile'
+               }
             </Button>
           </View>
         )}
@@ -157,13 +160,13 @@ export function CreateProfile ({navigation}) {
   )
 }
 
- const styles = StyleSheet.create({
-   title:{
-       fontSize:35,
-       marginBottom:16
-   },
-   form:{
-     flexDirection:'column',
-     gap:4
-   }
- })
+const styles = StyleSheet.create({
+  title:{
+      fontSize:35,
+      marginBottom:16
+  },
+  form:{
+    flexDirection:'column',
+    gap:4
+  }
+})

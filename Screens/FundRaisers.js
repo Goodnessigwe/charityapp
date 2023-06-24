@@ -1,63 +1,72 @@
-import {useState, useContext} from "react";
-import { AppContext } from "../Settings/globalVariables";
-import { View, StyleSheet } from "react-native";
+import { useState } from "react";
+import { StyleSheet,View,FlatList } from "react-native";
 import { SafeArea } from "../Components/SafeArea";
-import { Theme } from "../utils/theme";
 import { Button, Card, Text } from 'react-native-paper';
+import { Theme } from "../utils/theme";
+import { db } from "../Settings/firebase.setting";
+import { getDocs,collection } from "firebase/firestore";
+import { numberWithCommas } from "../utils/numberWithCommas";
 
-export function FundRaisers ({navigation}){
-    const {uid} =useContext(AppContext);
-    
-    return(
+export function FundRaisers ({navigation}) {
+    const [raisers,setRaisers] = useState([]);
+
+    const handleGetRaisers = async () => {
+        const querySnap = await getDocs(collection(db,'projects'));
+        setRaisers(querySnap.docs.map(doc => {
+            return {
+                id:doc.id,
+                data:{...doc.data()}
+            }
+        }))
+    }
+    handleGetRaisers();
+
+    return (
         <SafeArea>
-            <Card style={{}}>
-                {/* <Card.Title title="Card Title" subtitle="Card Subtitle" />
-                <Card.Content>
-                <Text variant="titleLarge">Card title</Text>
-                <Text variant="bodyMedium">Card content</Text>
-                </Card.Content> */}
-                <Card.Cover source={{ uri: 
-                    'https://media.istockphoto.com/id/108353497/photo/east-african-children-in-an-orphanage.jpg?s=612x612&w=0&k=20&c=y4Ss1cDpeDlMzahYkN5riOjuC9RO3TkaUA_wXxQMZ8o='
-                     }} />
-                <Text style={{color:Theme.colors.emerald, fontWeight:'bold', fontSize:20, marginLeft:20}}>ROCKLIN, CA</Text>
-                <Text style={{fontWeight:'bold', fontSize:20, marginLeft:20}}>The final act of kindness</Text>
-                <Text style={{textAlign:"left", marginLeft:14, marginTop:20}}>Last donation 8minute ago</Text>
-                <View style={styles.progressBarContainer}>
-                <View style={styles.progressBar}></View>
-                </View>
-                <Text style={{textAlign:"left", marginLeft:14, marginTop:5, paddingBottom:10, fontSize:20}}>
-                    <Text style={{fontWeight:'bold'}}>$40,445 raised</Text> 
-                       <Text> of $30,000</Text>
-                </Text>
-                 <Card.Actions>
-                   <Button style={{backgroundColor:Theme.colors.white2,color:Theme.colors.emerald,borderColor:Theme.colors.emerald}}
-                   onPress={()=>navigation.navigate('Donate')}>
-                    <Text style={{color:Theme.colors.emerald, fontSize:18}}>Donate</Text>
-                    </Button>
-                   {/* <Button>Ok</Button>  */}
-                 </Card.Actions> 
-                
-            </Card>
+            <View style={styles.container}>
+               <FlatList data={raisers} 
+                key={({item}) => item.id}
+                showsVerticalScrollIndicator={false}
+                renderItem={({item}) => {
+                return (
+                    <Card style={styles.card}>
+                        <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
+                        <Card.Content style={styles.cardContent}>
+                            <Text variant="headlineMedium">{item.data.title}</Text>
+                            <Text variant="titleLarge" style={{color:'green',marginBottom:8}}>
+                                Target: ₦{numberWithCommas(item.data.target)}
+                            </Text>
+                            <Text variant="bodyMedium">{item.data.description}</Text>
+                        </Card.Content>
+                        <Card.Actions>
+                            <Button onPress={() => navigation.navigate('Fund Raiser',{
+                                projectId:item.id,
+                            })} style={styles.viewBtn}>View</Button>
+                        </Card.Actions>
+                    </Card>
+                )
+               }}/>
+            </View>
         </SafeArea>
-
     )
 }
 
 const styles = StyleSheet.create({
-    progressBarContainer:{
-        width:'90%',
-        marginLeft:14,
-        marginTop:5,
+    container:{
+        flex:1,
     },
-    progressBar:{
-        width:'100%',
-        height:10,
-        backgroundColor:Theme.colors.emerald,
-        borderWidth:0.5,
-        borderColor:Theme.colors.black,
-        borderRadius:5,
-        flexDirection:'row'
+    card:{
+        marginBottom:Theme.sizes[3]
+    },
+    cardContent:{
+        paddingVertical:Theme.sizes[2]
+    },
+    viewBtn:{
+        borderWidth:1,
+        borderColor:Theme.colors.gray400,
+    },
+    donateBtn:{
+        backgroundColor:Theme.colors.gray400,
+        color:Theme.colors.lime400
     }
-    //title:Theme.colors.brown300,
-    //fontSize: Theme.sizes[4]
 })
